@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿#nullable disable
+using AutoMapper;
 using DevIO.App.ViewModels;
 using DevIO.Business.Interfaces;
 using DevIO.Business.Models;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevIO.App.Controllers
 {
-    public class ProdutosController : BaseController
+    public class ProdutosController : Controller
     {
         private readonly IProdutoRepository _produtorepository;
         private readonly IFornecedorRepository _fornecedorpository;
@@ -23,14 +24,14 @@ namespace DevIO.App.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {            
-            return View(_mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtorepository.ObterProdutosFornecedores()));
+        {
+            return View(_mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtorepository.ObterProdutosFornecedores()));           
         }
 
         public async Task<IActionResult> Details(Guid id)
         {
             var produtoViewModel = await ObterProduto(id);
-            if (produtoViewModel == null)            
+            if (produtoViewModel == null)
                 return NotFound();
 
             return View(produtoViewModel);
@@ -58,17 +59,17 @@ namespace DevIO.App.Controllers
         {
             var produtoViewModel = await ObterProduto(id);
             if (produtoViewModel == null)
-                return NotFound();            
-            
+                return NotFound();
+
             return View(produtoViewModel);
         }
-                
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, ProdutoViewModel produtoViewModel)
         {
-            if (id != produtoViewModel.Id)            
-                return NotFound();            
+            if (id != produtoViewModel.Id)
+                return NotFound();
 
             if (!ModelState.IsValid)
                 return View(produtoViewModel);
@@ -81,8 +82,8 @@ namespace DevIO.App.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var produtoViewModel = await ObterProduto(id);
-            if (produtoViewModel == null)            
-                return NotFound();            
+            if (produtoViewModel == null)
+                return NotFound();
 
             return View(produtoViewModel);
         }
@@ -94,7 +95,7 @@ namespace DevIO.App.Controllers
             var produtoViewModel = await ObterProduto(id);
             if (produtoViewModel == null)
                 return NotFound();
-                        
+
             await _produtorepository.Remover(id);
             return RedirectToAction("Index");
         }
@@ -107,10 +108,9 @@ namespace DevIO.App.Controllers
         }
 
         private async Task<ProdutoViewModel> PopularFornecedores(ProdutoViewModel produto)
-        {            
+        {
             produto.Fornecedores = _mapper.Map<IEnumerable<FornecedorViewModel>>(await _fornecedorpository.ObterTodos());
             return produto;
         }
-
     }
 }
