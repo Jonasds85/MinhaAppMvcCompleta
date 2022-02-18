@@ -50,13 +50,22 @@ namespace DevIO.App.Controllers
             if (!ModelState.IsValid)
                 return View(await PopularFornecedores(produtoViewModel));
 
-            var produto = _mapper.Map<Produto>(produtoViewModel);
+            string fileName = $"{Guid.NewGuid()}_{produtoViewModel.ImagemUpload?.FileName.Replace(" ", "")}";
+            if (! await UploadArquivo(produtoViewModel, fileName))            
+                return View(produtoViewModel);
+
+            produtoViewModel.Imagem = fileName;
+            var produto = _mapper.Map<Produto>(produtoViewModel);            
+
             await _produtorepository.Adicionar(produto);
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(Guid id)
         {
+            if (Guid.Empty == id)
+                return RedirectToAction(nameof(Index));
+
             var produtoViewModel = await ObterProduto(id);
             if (produtoViewModel == null)
                 return NotFound();
@@ -71,10 +80,28 @@ namespace DevIO.App.Controllers
             if (id != produtoViewModel.Id)
                 return NotFound();
 
+            var produtoAtualizacao = await ObterProduto(id);
+            produtoViewModel.Fornecedor = produtoAtualizacao.Fornecedor;
+            produtoViewModel.Imagem = produtoAtualizacao.Imagem;
+
             if (!ModelState.IsValid)
                 return View(produtoViewModel);
 
-            var produto = _mapper.Map<Produto>(produtoViewModel);
+            if (produtoViewModel.ImagemUpload != null)
+            {
+                string fileName = $"{Guid.NewGuid()}_{produtoViewModel.ImagemUpload?.FileName.Replace(" ", "")}";
+                if (!await UploadArquivo(produtoViewModel, fileName))
+                    return View(produtoViewModel);
+
+                produtoAtualizacao.Imagem = fileName;
+            }
+
+            produtoAtualizacao.Nome = produtoViewModel.Nome;
+            produtoAtualizacao.Descricao = produtoViewModel.Descricao;
+            produtoAtualizacao.Valor = produtoViewModel.Valor;
+            produtoAtualizacao.Ativo = produtoViewModel.Ativo;
+            var produto = _mapper.Map<Produto>(produtoAtualizacao);
+
             await _produtorepository.Atualizar(produto);
             return RedirectToAction("Index");
         }
@@ -111,6 +138,27 @@ namespace DevIO.App.Controllers
         {
             produto.Fornecedores = _mapper.Map<IEnumerable<FornecedorViewModel>>(await _fornecedorpository.ObterTodos());
             return produto;
+        }
+
+        private async Task<bool> UploadArquivo(ProdutoViewModel produtoViewModel, string fileName)
+        {
+            if (produtoViewModel.ImagemUpload.Length <= 0)
+                return false;
+            
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", fileName);
+
+            if (System.IO.File.Exists(path))
+            {
+                ModelState.AddModelError(string.Empty, "Já existe um arquivo com este nome!");
+                return false;
+            }
+                
+            using(var stream = new FileStream(path, FileMode.Create))
+            {
+                await produtoViewModel.ImagemUpload.CopyToAsync(stream);
+            }
+
+            return true;
         }
     }
 }
