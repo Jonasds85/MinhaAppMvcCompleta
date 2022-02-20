@@ -9,13 +9,16 @@ namespace DevIO.App.Controllers
     public class FornecedoresController : BaseController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
+        private readonly IProdutoRepository _produtoRepository;
         private readonly IMapper _mapper;
 
         public FornecedoresController(
             IFornecedorRepository fornecedorRepository,
+            IProdutoRepository produtoRepository,
             IMapper mapper)
         {
             _fornecedorRepository = fornecedorRepository;
+            _produtoRepository = produtoRepository;
             _mapper = mapper;
         }
                 
@@ -51,7 +54,7 @@ namespace DevIO.App.Controllers
 
         public async Task<IActionResult> Edit(Guid id)
         {
-            var fornecedorViewModel = await ObterFornecedorEndereco(id);
+            var fornecedorViewModel = await ObterFornecedorProdutosEndereco(id);
             if (fornecedorViewModel == null)            
                 return NotFound();
             
@@ -96,7 +99,9 @@ namespace DevIO.App.Controllers
 
         private async Task<FornecedorViewModel> ObterFornecedorEndereco(Guid id)
         {
-            return _mapper.Map<FornecedorViewModel>(await _fornecedorRepository.ObterFornecedorEndereco(id));
+            var fornecedorViewModel = _mapper.Map<FornecedorViewModel>(await _fornecedorRepository.ObterFornecedorEndereco(id));
+            //fornecedorViewModel.Produtos = _produtoRepository.
+            return fornecedorViewModel;
         }
 
         private async Task<FornecedorViewModel> ObterFornecedorProdutosEndereco(Guid id)
