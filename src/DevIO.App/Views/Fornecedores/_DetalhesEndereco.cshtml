@@ -58,19 +58,28 @@
                 <td>
                     @Html.DisplayFor(model => model.Endereco.Estado)
                 </td>
-                <td>
-                    <a class="btn btn-info"> <span title="Editar" class="fa fa-pencil-alt"></span> </a>
-@*                    <a supress-by-action="Edit,ObterEndereco" asp-action="AtualizarEndereco" asp-route-id="@Model.Id" class="btn btn-info" data-modal="">
+                <td> 
+                    <button type="button" class="btn btn-primary" onclick="AbrirModalAtualizarEndereco()">
+                      <span title="Editar" class="fa fa-pencil-alt"></span>
+                    </button>                    
+@*                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                      <span title="Editar" class="fa fa-pencil-alt"></span>
+                    </button>*@
+@*                    <a asp-action="AtualizarEndereco" asp-route-id="@Model.Id" class="btn btn-info" data-modal="" >
+                        <span title="Editar" class="fa fa-pencil-alt"></span>
+                    </a>   *@                 
+@*                    <a supress-by-action="AtualizarEndereco" asp-action="AtualizarEndereco" asp-route-id="@Model.Id" class="btn btn-info" data-modal="">
                         <span title="Editar" class="fa fa-pencil-alt"></span>
                     </a>*@
                 </td>
             </tr>
         </table>
     }
+<div id="AtualizarEnderecoTarget">
+    <partial name="_AtualizarEndereco.cshtml" />
+</div>
+    
 
 </div>
 
-@*<script>
-    SetModal();
-</script>*@
 
