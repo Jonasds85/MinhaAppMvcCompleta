@@ -62,19 +62,11 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
+        
+        BuscaCep();
 
         let modalAtualizarEndereco;
-        $(document).ready(function () {
-
-            //document.getElementById('BtnShowModal').addEventListener("click",             function(){
-            //    modalAtualizarEndereco = new bootstrap.Modal(document.getElementById('myModal'), {
-            //      keyboard: true
-            //    });
-            //    modalAtualizarEndereco.show()
-            //}  );
-
-
-          
+        $(document).ready(function () {         
 
 
             $('form', this).submit(function (){                        
@@ -82,7 +74,7 @@
                     url: this.action,
                     type: this.method,
                     data: $(this).serialize(),
-                    dataType:"json",
+                 
                     success: function(result){                                                
                         if (result.success){                                
                             modalAtualizarEndereco.hide()                                           
