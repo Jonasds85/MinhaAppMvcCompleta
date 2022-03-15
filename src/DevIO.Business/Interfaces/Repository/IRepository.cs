@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevIO.Business.Interfaces
+namespace DevIO.Business.Interfaces.Repository
 {
     //TEntity = para aceitar objeto generico
     //IDisposable = para obrigar a liberação de recursos

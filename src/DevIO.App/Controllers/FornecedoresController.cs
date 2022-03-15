@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DevIO.App.ViewModels;
 using DevIO.Business.Interfaces;
+using DevIO.Business.Interfaces.Repository;
 using DevIO.Business.Models;
 using Microsoft.AspNetCore.Mvc;
 

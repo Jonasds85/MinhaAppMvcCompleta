@@ -1,5 +1,6 @@
 ﻿using DevIO.App.Extensions;
 using DevIO.Business.Interfaces;
+using DevIO.Business.Interfaces.Repository;
 using DevIO.Data.Context;
 using DevIO.Data.Repository;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
