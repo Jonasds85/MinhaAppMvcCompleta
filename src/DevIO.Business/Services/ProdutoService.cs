@@ -1,4 +1,5 @@
-﻿using DevIO.Business.Interfaces.Repository;
+﻿using DevIO.Business.Interfaces;
+using DevIO.Business.Interfaces.Repository;
 using DevIO.Business.Interfaces.Services;
 using DevIO.Business.Models;
 using DevIO.Business.Models.Validations;
@@ -9,11 +10,11 @@ namespace DevIO.Business.Services
     {
         private readonly IProdutoRepository _produtoRepository;
 
-        //public ProdutoService(IProdutoRepository produtoRepository,
-        //                      INotificador notificador) : base(notificador)
-        //{
-        //    _produtoRepository = produtoRepository;
-        //}
+        public ProdutoService(IProdutoRepository produtoRepository,
+                              INotificador notificador) : base(notificador)
+        {
+            _produtoRepository = produtoRepository;
+        }
 
         public async Task Adicionar(Produto produto)
         {

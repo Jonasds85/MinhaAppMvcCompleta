@@ -1,4 +1,5 @@
 ﻿using DevIO.App.ViewModels;
+using DevIO.Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,7 +9,7 @@ namespace DevIO.App.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, INotificador notificador) : base (notificador)
         {
             _logger = logger;
         }

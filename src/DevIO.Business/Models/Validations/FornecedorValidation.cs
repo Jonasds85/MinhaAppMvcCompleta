@@ -11,8 +11,8 @@ namespace DevIO.Business.Models.Validations
                 .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido")
                 .Length(2, 100).WithMessage("O campo {PropertyName} precisa ter entre {MinLength} e {MaxLength} caracteres");
 
-            RuleFor(f => f.Endereco)
-                .Null().WithMessage("O campo {PropertyName} precisa ser fornecido");
+            //RuleFor(f => f.Endereco)
+            //    .Null().WithMessage("O campo {PropertyName} precisa ser fornecido");
 
             When(f => f.TipoFornecedor == TipoFornecedor.PessoaFisica, () =>
             {

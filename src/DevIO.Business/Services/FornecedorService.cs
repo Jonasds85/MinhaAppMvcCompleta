@@ -1,4 +1,5 @@
-﻿using DevIO.Business.Interfaces.Repository;
+﻿using DevIO.Business.Interfaces;
+using DevIO.Business.Interfaces.Repository;
 using DevIO.Business.Interfaces.Services;
 using DevIO.Business.Models;
 using DevIO.Business.Models.Validations;
@@ -10,18 +11,18 @@ namespace DevIO.Business.Services
         private readonly IFornecedorRepository _fornecedorRepository;
         private readonly IEnderecoRepository _enderecoRepository;
 
-        //public FornecedorService(IFornecedorRepository fornecedorRepository,
-        //                         IEnderecoRepository enderecoRepository,
-        //                         INotificador notificador) : base(notificador)
-        //{
-        //    _fornecedorRepository = fornecedorRepository;
-        //    _enderecoRepository = enderecoRepository;
-        //}
+        public FornecedorService(IFornecedorRepository fornecedorRepository,
+                                 IEnderecoRepository enderecoRepository,
+                                 INotificador notificador) : base(notificador)
+        {
+            _fornecedorRepository = fornecedorRepository;
+            _enderecoRepository = enderecoRepository;
+        }
 
         public async Task Adicionar(Fornecedor fornecedor)
         {
-            if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)
-                || !ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco)) return;
+            if (!ExecutarValidacao(new FornecedorValidation(), fornecedor) || 
+                !ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco)) return;
 
             if (_fornecedorRepository.Buscar(f => f.Documento == fornecedor.Documento).Result.Any())
             {
